@@ -21,6 +21,7 @@
     "url": "git+ssh://git@github.com/graphile/migrate.git"
   },
   "keywords": [
+    "cli",
     "postgresql",
     "postgres",
     "pg",
