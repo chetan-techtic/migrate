@@ -20,9 +20,9 @@ afterEach(() => {
   mockFs.restore();
 });
 
-it("reads from current.sql", async () => {
+it("reads from current.psql", async () => {
   mockFs({
-    "migrations/current.sql": "-- TEST",
+    "migrations/current.psql": "-- TEST",
   });
 
   const currentLocation = await getCurrentMigrationLocation(parsedSettings);
@@ -31,7 +31,7 @@ it("reads from current.sql", async () => {
   expect(content).toEqual("-- TEST");
 });
 
-it("returns empty if there's no current.sql", async () => {
+it("returns empty if there's no current.psql", async () => {
   const currentLocation = await getCurrentMigrationLocation(parsedSettings);
 
   const content = await readCurrentMigration(parsedSettings, currentLocation);

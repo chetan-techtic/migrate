@@ -14,7 +14,7 @@ import {
 
 beforeEach(resetDb);
 
-it("doesn't run current.sql if it's already up to date", async () => {
+it("doesn't run current.psql if it's already up to date", async () => {
   const { settings, getActionCalls } = makeActionSpies();
   const parsedSettings = await parseSettings({
     connectionString: TEST_DATABASE_URL,

@@ -110,7 +110,7 @@ export function mockCurrentSqlContentOnce(
   content: string,
 ) {
   mockFs({
-    [parsedSettings.migrationsFolder + "/current.sql"]: content,
+    [parsedSettings.migrationsFolder + "/current.psql"]: content,
   });
 }
 

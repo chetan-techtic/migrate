@@ -128,7 +128,7 @@ export async function _migrateMigrationSchema(
     );
 
     create table if not exists graphile_migrate.current (
-      filename text primary key default 'current.sql',
+      filename text primary key default 'current.psql',
       content text not null,
       date timestamptz not null default now()
     );
@@ -333,6 +333,6 @@ export async function reverseMigration(
 
   // Clean up graphile_migrate.current
   await pgClient.query(
-    `delete from graphile_migrate.current where filename = 'current.sql'`,
+    `delete from graphile_migrate.current where filename = 'current.psql'`,
   );
 }

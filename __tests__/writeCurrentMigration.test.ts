@@ -21,27 +21,27 @@ afterEach(() => {
   mockFs.restore();
 });
 
-it("writes to current.sql if current.sql exists", async () => {
+it("writes to current.psql if current.psql exists", async () => {
   mockFs({
-    "migrations/current.sql": "-- TEST",
+    "migrations/current.psql": "-- TEST",
   });
 
   const currentLocation = await getCurrentMigrationLocation(parsedSettings);
 
   await writeCurrentMigration(parsedSettings, currentLocation, "TEST!");
-  const content = await fsp.readFile("migrations/current.sql", "utf8");
+  const content = await fsp.readFile("migrations/current.psql", "utf8");
   expect(content).toEqual("TEST!");
 });
 
-it("writes to current.sql if no current.sql exists", async () => {
-  expect(fsp.stat("migrations/current.sql")).rejects.toMatchObject({
+it("writes to current.psql if no current.psql exists", async () => {
+  expect(fsp.stat("migrations/current.psql")).rejects.toMatchObject({
     code: "ENOENT",
   });
 
   const currentLocation = await getCurrentMigrationLocation(parsedSettings);
 
   await writeCurrentMigration(parsedSettings, currentLocation, "TEST!");
-  const content = await fsp.readFile("migrations/current.sql", "utf8");
+  const content = await fsp.readFile("migrations/current.psql", "utf8");
   expect(content).toEqual("TEST!");
 });
 

@@ -22,7 +22,7 @@ export async function _uncommit(parsedSettings: ParsedSettings): Promise<void> {
     throw new Error("There's no committed migration to uncommit");
   }
 
-  // Check current.sql is blank
+  // Check current.psql is blank
   const currentLocation = await getCurrentMigrationLocation(parsedSettings);
   const currentBody = await readCurrentMigration(
     parsedSettings,
@@ -33,7 +33,7 @@ export async function _uncommit(parsedSettings: ParsedSettings): Promise<void> {
     throw new Error("Cannot uncommit - current migration is not blank.");
   }
 
-  // Restore current.sql from migration
+  // Restore current.psql from migration
   const lastMigrationFilepath = `${committedMigrationsFolder}/${lastMigration.filename}`;
   const body = await fsp.readFile(lastMigrationFilepath, "utf8");
   const nn = body.indexOf("\n\n");

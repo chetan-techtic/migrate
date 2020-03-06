@@ -45,7 +45,7 @@ export interface CurrentMigrationLocation {
 export async function getCurrentMigrationLocation(
   parsedSettings: ParsedSettings,
 ): Promise<CurrentMigrationLocation> {
-  const filePath = `${parsedSettings.migrationsFolder}/current.sql`;
+  const filePath = `${parsedSettings.migrationsFolder}/current.psql`;
   const dirPath = `${parsedSettings.migrationsFolder}/current`;
 
   const fileStats = await statOrNull(filePath);

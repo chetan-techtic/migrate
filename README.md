@@ -102,7 +102,7 @@ of achieving this is through Docker, but that isn't required).
 
 ### `graphile-migrate migrate [--shadow] [--force]`
 
-Runs any un-executed committed migrations. Does **not** run `current.sql`. For
+Runs any un-executed committed migrations. Does **not** run `current.psql`. For
 use in production and development.
 
 If `--shadow` is specified, migrates the shadow database instead.
@@ -113,16 +113,16 @@ no migrations are actually ran.
 ### `graphile-migrate watch [--shadow] [--once]`
 
 Runs any un-executed committed migrations and then runs and watches
-`current.sql`, re-running its contents on any change.
+`current.psql`, re-running its contents on any change.
 
-`current.sql` should be idempotent (this is your responsibility, see
+`current.psql` should be idempotent (this is your responsibility, see
 "Idempotency" below); i.e. it should be able to be ran multiple times and have
 the same result.
 
 If `--shadow` is specified, changes will be applied against the shadow database
 instead.
 
-If `--once` is specified, `current.sql` will be ran once and then the command
+If `--once` is specified, `current.psql` will be ran once and then the command
 will exit.
 
 ### `graphile-migrate commit`
@@ -134,9 +134,9 @@ will exit.
 
 ### `graphile-migrate uncommit`
 
-Moves the latest committed migration back to `current.sql` and deletes the
+Moves the latest committed migration back to `current.psql` and deletes the
 committed migration from the filesystem and from the database migrations table.
-Will only work when `current.sql` is empty(ish).
+Will only work when `current.psql` is empty(ish).
 
 Do **NOT** use it once other systems have ran the commit. This is for use during
 development only, probably before your changes are pushed/merged.
@@ -156,7 +156,7 @@ main database.
 Exits with a bitmap status code indicating statuses:
 
 - 1 if there are committed migrations that have not been executed yet
-- 2 if the `current.sql` file is non-empty (ignoring comments)
+- 2 if the `current.psql` file is non-empty (ignoring comments)
 
 If both of the above are true then the output status will be 3 (1+2). If neither
 are true, exit status will be 0 (success).
@@ -170,7 +170,7 @@ There are 3 committed migrations pending:
   000002.sql
   000003.sql
 
-The current.sql migration is not empty and has not been committed.
+The current.psql migration is not empty and has not been committed.
 ```
 
 ## Library usage
@@ -220,7 +220,7 @@ Configuration goes in `.gmrc`, which is a JSON file with the following keys:
   migrations have ran, useful for performing a tasks like dumping the database
   or regenerating dependent data (GraphQL schema, type definitions, etc). See
   "Actions" below.
-- `afterCurrent` — optional list of actions to execute after `current.sql` is
+- `afterCurrent` — optional list of actions to execute after `current.psql` is
   loaded into the database. See "Actions" below.
 - `manageGraphileMigrateSchema` (defaults to `true`) — if set to `false`, you
   assume responsibility for managing the `graphile_migrate` schema. **Not
@@ -274,7 +274,7 @@ committed migrations on all platforms:
 
 ```
 migrations/committed/*.sql text eol=lf
-migrations/current.sql text eol=lf
+migrations/current.psql text eol=lf
 ```
 
 After committing this change, you may run `git checkout-index --force --all` to
@@ -361,7 +361,7 @@ development database.
 ## Idempotency
 
 `graphile-migrate` is all about iteration; you write your database modification
-commands in `migrations/current.sql` and every time you save it is ran against
+commands in `migrations/current.psql` and every time you save it is ran against
 the database, generally taking under 100ms.
 
 Because we run the same script over and over (on every save) and there's no down

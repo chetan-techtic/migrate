@@ -117,7 +117,7 @@ describe("manageGraphlileMigrateSchema = false", () => {
       );
 
       create table if not exists graphile_migrate.current (
-        filename text primary key default 'current.sql',
+        filename text primary key default 'current.psql',
         content text not null,
         date timestamptz not null default now()
       );
@@ -140,7 +140,7 @@ describe("manageGraphlileMigrateSchema = false", () => {
       );
 
       create table if not exists graphile_migrate.current (
-        filename text primary key default 'current.sql',
+        filename text primary key default 'current.psql',
         content text not null,
         date timestamptz not null default now()
       );

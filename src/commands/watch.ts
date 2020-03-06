@@ -25,7 +25,7 @@ export function _makeCurrentMigrationRunner(
 
     try {
       // eslint-disable-next-line no-console
-      console.log(`[${new Date().toISOString()}]: Running current.sql`);
+      console.log(`[${new Date().toISOString()}]: Running current.psql`);
       const start = process.hrtime();
       const connectionString = shadow
         ? parsedSettings.shadowConnectionString
@@ -45,18 +45,18 @@ export function _makeCurrentMigrationRunner(
               "lock graphile_migrate.current in EXCLUSIVE mode",
             );
 
-            // 2: Get last current.sql from graphile_migrate.current
+            // 2: Get last current.psql from graphile_migrate.current
             const {
               rows: [previousCurrent],
             } = await lockingPgClient.query(
               `
               select *
               from graphile_migrate.current
-              where filename = 'current.sql'
+              where filename = 'current.psql'
             `,
             );
 
-            // 3: minify and compare last ran current.sql with this _COMPILED_ current.sql.
+            // 3: minify and compare last ran current.psql with this _COMPILED_ current.psql.
             const previousBody: string | void =
               previousCurrent && previousCurrent.content;
             const { sql: currentBodyFromDryRun } = await runStringMigration(
@@ -64,7 +64,7 @@ export function _makeCurrentMigrationRunner(
               parsedSettings,
               context,
               body,
-              "current.sql",
+              "current.psql",
               undefined,
               true,
             );
@@ -101,7 +101,7 @@ export function _makeCurrentMigrationRunner(
                       parsedSettings,
                       context,
                       body,
-                      "current.sql",
+                      "current.psql",
                       undefined,
                     ),
                 );
@@ -109,7 +109,7 @@ export function _makeCurrentMigrationRunner(
             } else {
               // eslint-disable-next-line no-console
               console.log(
-                `[${new Date().toISOString()}]: current.sql unchanged, skipping migration`,
+                `[${new Date().toISOString()}]: current.psql unchanged, skipping migration`,
               );
             }
 
